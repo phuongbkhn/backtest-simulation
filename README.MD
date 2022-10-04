@@ -20,7 +20,7 @@ python3 data_file_to_db.py
 
 - Read data from the database, use Zeromq to make a socket to send data.
 - You need to input start and end time to this function.
-- The time sleep between 2 sending time is the difference between two time stamps in seconds.
+- The time sleep between 2 sending time is the difference between two time stamps in seconds. You can accelarate this by passing para time_acc in send_data_zmq function (default value: 1000).
 
 Use:
 ```
