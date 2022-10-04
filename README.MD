@@ -1,4 +1,4 @@
-#Storing data for backtest
+# Storing data for backtest
 
 This module read tick data from a csv file, push them to a Postgres database, then use for backtest as simulation by sending tick data one by one.
 
