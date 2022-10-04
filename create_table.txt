@@ -13,5 +13,6 @@ server_year int,
 server_month int,
 server_day int,
 server_hour int,
-server_minute int
+server_minute int,
+delta_t float
 );

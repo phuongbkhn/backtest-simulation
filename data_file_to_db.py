@@ -29,6 +29,12 @@ def make_dataframe(file):
     df['server_hour'] = df['server_time'].apply(lambda x: datetime.fromtimestamp(int(x)/1000000).strftime("%-H"))
     df['server_minute'] = df['server_time'].apply(lambda x: datetime.fromtimestamp(int(x)/1000000).strftime("%-M"))
 
+    for i in range(len(df)):
+        if i < len(df) - 1:
+            df.at[i,'delta_t'] = (datetime.fromtimestamp(int(df['server_time'][i+1])/1000000) - datetime.fromtimestamp(int(df['server_time'][i])/1000000)).total_seconds()
+        else:
+            df.at[i,'delta_t'] = 0
+
     df = df.iloc[:,10:]
 
     return df
@@ -36,4 +42,4 @@ def make_dataframe(file):
 if  __name__ == "__main__":
     df = make_dataframe(tickdatafile)
     connect_n_push_to_db(df)
-    print("All data in {} is now storing in your database! All tasks done!".format(tickdatafile))
+    print("All data in {} is stored in your database! All tasks done!".format(tickdatafile))

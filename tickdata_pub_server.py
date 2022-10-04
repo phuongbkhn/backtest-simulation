@@ -1,6 +1,7 @@
 import zmq
 import time
 from datetime import datetime
+import random
 
 
 import psycopg2
@@ -38,7 +39,20 @@ def read_data_from_db(start_timestamp, end_timestamp):
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('Database connection closed!')
+
+# def random_zero_none():
+#     fake_errors = [0, None]
+#     return random.choice(fake_errors)
+
+def random_outlier(x):
+    return round(x*random.uniform(1.06,1.1),2)
+
+def random_all(x):
+    random_list = [0, None]
+    random_list.append(random_outlier(x))
+    return random.choice(random_list)
+
 
 def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
     port = "5556"
@@ -52,17 +66,32 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
         price = data[i][4]
         bid = data[i][6]
         ask = data[i][7]
-        print("%s %.2f %.2f %.2f" %(symbol,price,bid,ask))
-        socket.send_string("%s %.2f %.2f %.2f" %(symbol,price,bid,ask))
-        if i < len(data) - 1:
-            deltat = (datetime.fromtimestamp(int(data[i+1][2])/1000000) - datetime.fromtimestamp(int(data[i][2])/1000000)).total_seconds()
-            time.sleep(deltat/time_acc)
+        delta_t = data[i][15]
+        if i % 10 != 0:
+            print("%s %.2f %.2f %.2f" %(symbol,price,bid,ask))
+            socket.send_string("%s %.2f %.2f %.2f" %(symbol,price,bid,ask))
+        
+            time.sleep(delta_t/time_acc)
         else:
-            print("Done! All data has been sent successfully!")
+            fake_price = random_all(price)
+            fake_bid = random_all(bid)
+            fake_ask = random_all(ask)
+            print("{} {} {} {}".format(symbol,fake_price,fake_bid,fake_ask))
+            socket.send_string("{} {} {} {}".format(symbol,fake_price,fake_bid,fake_ask))
+
+       
+    print("Done! All data has been sent successfully!")
 
 if  __name__ == "__main__":
     s_year,s_month,s_date,s_hour,s_min = input("Input start time by format: yyyy-m-d-h-m (ex: 2022-1-1-0-0): ").split("-")
-    e_year,e_month,e_date,e_hour,e_min = input("Input end time by format: yyyy-m-d-h-m (ex: 2022-1-2-0-0): ").split("-")
     start_time = to_timestamps(int(s_year),int(s_month),int(s_date),int(s_hour),int(s_min))
-    end_time = to_timestamps(int(e_year),int(e_month),int(e_date),int(e_hour),int(e_min))
+
+    e_string = input("Input end time by format: yyyy-m-d-h-m (ex: 2022-1-2-0-0), 'Enter' means 'Now': ")
+    if e_string:
+        e_year,e_month,e_date,e_hour,e_min = e_string.split("-")
+        end_time = to_timestamps(int(e_year),int(e_month),int(e_date),int(e_hour),int(e_min))
+    else:
+        e_time = datetime.now()
+        end_time = round(e_time.timestamp() * 1000000)
+
     send_data_zmq(start_time,end_time)

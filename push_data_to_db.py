@@ -1,6 +1,7 @@
 from pandas import DataFrame
 import psycopg2
 from config import config
+from tqdm import tqdm
 
 def connect_n_push_to_db(df:DataFrame):
     """ Connect to the PostgreSQL database server """
@@ -19,10 +20,10 @@ def connect_n_push_to_db(df:DataFrame):
 	    # execute a statement
 
         added_values = []
-        for i in range(len(df)):
+        for i in tqdm(range(len(df))):
             data = list(df.loc[i])
-            added_value = "('{}','{}',{},{},{},{},{},{},'{}','{}',{},{},{},{},{})".format(
-                    data[0], data[1], data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12],data[13],data[14])
+            added_value = "('{}','{}',{},{},{},{},{},{},'{}','{}',{},{},{},{},{},{})".format(
+                    data[0], data[1], data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12],data[13],data[14],data[15])
             added_values.append(added_value)
 
         sql_command = "INSERT INTO tickdatatable VALUES {};".format(",".join(added_values))
