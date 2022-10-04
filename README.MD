@@ -7,7 +7,7 @@ This module read tick data from a csv file, push them to a Postgres database, th
 - **database.ini** : information of the local PostgresSQL (host, database name, user, password)
 - **config.py** : use information in database.ini to config the connection
 - **push_data_to_db.py** : push data from a dataframe to your database.
-- *Note*: you need to create a table first, with all columns are matching with columns in the dataframe.
+- *Note*: you need to create a table first, with all columns are matching with columns in the dataframe. Check file *create_table.txt* for prepared sql command.
 - **data_file_to_db** : read data from csv file, transform the data, then use push_data_to_db to store them into your db.
 
 Use: after prepare database, and all configurations are done, run this in command line:
