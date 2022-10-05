@@ -1,0 +1,22 @@
+create database tickdata;
+
+\c tickdata
+
+create table tickdatatable (
+symbol varchar(20),
+event varchar(20),
+server_time bigint,
+received_time bigint,
+price float,
+vol int,
+big float,
+ask float,
+valid varchar(10),
+outliner varchar(10),
+server_year int,
+server_month int,
+server_day int,
+server_hour int,
+server_minute int,
+delta_t float
+);

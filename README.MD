@@ -2,6 +2,17 @@
 
 This module read tick data from a csv file, push them to a Postgres database, then use for backtest as simulation by sending tick data one by one.
 
+## Quickly create Postgres database and table
+
+Use file **init.sql** to quickly create database and table for this module.
+
+Run this from terminal:
+```
+psql -h localhost -U postgres -a -f init.sql
+```
+*Note*: This works only with Postgres.
+
+
 ## Push data to db
 
 - **database.ini** : information of the local PostgresSQL (host, database name, user, password)
