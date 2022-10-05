@@ -1,0 +1,5 @@
+*.csv
+__pycache__
+.~lock.tick_data.csv#
+.ipynb_checkpoints
+process_data.ipynb

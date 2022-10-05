@@ -13,23 +13,24 @@ def connect_n_push_to_db(df:DataFrame):
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
         conn = psycopg2.connect(**params)
+        print('Connected!')
 		
         # create a cursor
         cur = conn.cursor()
        
 	    # execute a statement
+        print("Inserting new data to database...")
 
-        added_values = []
         for i in tqdm(range(len(df))):
             data = list(df.loc[i])
             added_value = "('{}','{}',{},{},{},{},{},{},'{}','{}',{},{},{},{},{},{})".format(
                     data[0], data[1], data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12],data[13],data[14],data[15])
-            added_values.append(added_value)
+            sql_command = "INSERT INTO tickdatatable VALUES {};".format(added_value)
+            cur.execute(sql_command)
 
-        sql_command = "INSERT INTO tickdatatable VALUES {};".format(",".join(added_values))
-        # print(sql_command)
-        cur.execute(sql_command)
         conn.commit()
+
+        print("Compeleted!")
       
 	# close the communication with the PostgreSQL
         cur.close()

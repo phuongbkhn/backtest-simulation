@@ -1,9 +1,10 @@
 import pandas as pd
 from push_data_to_db import connect_n_push_to_db
 from datetime import datetime
+from tqdm import tqdm
 
 # tickdata csv file
-tickdatafile = 'tick_data.csv'
+tickdatafile = 'tick_data_221005.csv'
 
 def split_info(a):
     split_a = a.split(":")
@@ -29,17 +30,19 @@ def make_dataframe(file):
     df['server_hour'] = df['server_time'].apply(lambda x: datetime.fromtimestamp(int(x)/1000000).strftime("%-H"))
     df['server_minute'] = df['server_time'].apply(lambda x: datetime.fromtimestamp(int(x)/1000000).strftime("%-M"))
 
-    for i in range(len(df)):
-        if i < len(df) - 1:
-            df.at[i,'delta_t'] = (datetime.fromtimestamp(int(df['server_time'][i+1])/1000000) - datetime.fromtimestamp(int(df['server_time'][i])/1000000)).total_seconds()
-        else:
-            df.at[i,'delta_t'] = 0
+    delta_t_values = []
+    for i in tqdm(range((len(df))-1)):
+        delta_t_values.append((datetime.fromtimestamp(int(df['server_time'][i+1])/1000000) - datetime.fromtimestamp(int(df['server_time'][i])/1000000)).total_seconds())
+    delta_t_values.append(0)
+    df['delta_t'] = delta_t_values
 
     df = df.iloc[:,10:]
 
     return df
 
 if  __name__ == "__main__":
+    print("*** STEP 1: MAKE DATAFRAME FROM FILE {}. Please wait!".format(tickdatafile))
     df = make_dataframe(tickdatafile)
+    print("*** STEP 2: WRITE DATA TO YOUR DATABASE!")
     connect_n_push_to_db(df)
     print("All data in {} is stored in your database! All tasks done!".format(tickdatafile))
