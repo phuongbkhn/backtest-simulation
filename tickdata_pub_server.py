@@ -45,13 +45,23 @@ def read_data_from_db(start_timestamp, end_timestamp):
 #     fake_errors = [0, None]
 #     return random.choice(fake_errors)
 
-def random_outlier(x):
+def random_upper_outlier(x):
     return round(x*random.uniform(1.06,1.1),2)
+
+def random_lower_outlier(x):
+    return round(x*random.uniform(0.9,0.94),2)
 
 def random_all(x):
     random_list = [0, None]
-    random_list.append(random_outlier(x))
+    random_list.append(random_upper_outlier(x))
+    random_list.append(random_lower_outlier(x))
     return random.choice(random_list)
+
+def random_5():
+    return round(random.uniform(4.9,5.1),2)
+
+def random_500():
+    return round(random.uniform(499,501),2)
 
 
 def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
@@ -67,17 +77,57 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
         bid = data[i][6]
         ask = data[i][7]
         delta_t = data[i][15]
-        if i % 10 != 0:
-            print("%s %.2f %.2f %.2f" %(symbol,price,bid,ask))
-            socket.send_string("%s %.2f %.2f %.2f" %(symbol,price,bid,ask))
+
+        if symbol == 'PLD US Equity':
+            if i % 10 != 0:
+                print("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
+                socket.send_string("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
+                time.sleep(delta_t/time_acc)
+
+                symbol='ULS VN Equity'
+                print("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+                socket.send_string("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+                time.sleep(delta_t/time_acc)
+
+            else:
+                fake_bid = random_all(bid)
+                print("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                socket.send_string("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                time.sleep(delta_t/time_acc)
         
-            time.sleep(delta_t/time_acc)
+        elif symbol == 'RTO LN Equity':
+            if i % 10 != 0:
+                print("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
+                socket.send_string("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))            
+                time.sleep(delta_t/time_acc)
+
+                symbol='ULS VN Equity'
+                print("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+                socket.send_string("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+                time.sleep(delta_t/time_acc)
+
+            else:
+                fake_bid = random_all(bid)
+                print("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                socket.send_string("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                time.sleep(delta_t/time_acc)
+
+                symbol='OLS VN Equity'
+                print("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
+                socket.send_string("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
+                time.sleep(delta_t/time_acc)
+
         else:
-            fake_price = random_all(price)
-            fake_bid = random_all(bid)
-            fake_ask = random_all(ask)
-            print("{} {} {} {}".format(symbol,fake_price,fake_bid,fake_ask))
-            socket.send_string("{} {} {} {}".format(symbol,fake_price,fake_bid,fake_ask))
+            if i % 10 != 0:
+                print("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
+                socket.send_string("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
+            
+                time.sleep(delta_t/time_acc)
+            else:
+                fake_bid = random_all(bid)
+                print("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                socket.send_string("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                time.sleep(delta_t/time_acc)
 
        
     print("Done! All data has been sent successfully!")

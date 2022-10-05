@@ -10,7 +10,7 @@ print("Collecting updates from tickdatatable of tickdata database...")
 socket.connect ("tcp://localhost:%s" % port)
 
 # Subscribe to symbol
-symbol = "CNE LN Equity"
+symbol = "ULS VN Equity"
 socket.setsockopt_string(zmq.SUBSCRIBE, symbol)
 
 while True:
