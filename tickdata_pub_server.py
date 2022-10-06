@@ -78,44 +78,15 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
         ask = data[i][7]
         delta_t = data[i][15]
 
-        if symbol == 'PLD US Equity':
-            if i % 10 != 0:
-                print("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
-                socket.send_string("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
-                time.sleep(delta_t/time_acc)
-
-                symbol='ULS VN Equity'
-                print("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
-                socket.send_string("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
-                time.sleep(delta_t/time_acc)
-
-            else:
-                fake_bid = random_all(bid)
-                print("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
-                socket.send_string("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
-                time.sleep(delta_t/time_acc)
+        if symbol == 'FRO US Equity':
+            print("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+            socket.send_string("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+            time.sleep(delta_t/time_acc)
         
-        elif symbol == 'RTO LN Equity':
-            if i % 10 != 0:
-                print("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
-                socket.send_string("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))            
-                time.sleep(delta_t/time_acc)
-
-                symbol='ULS VN Equity'
-                print("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
-                socket.send_string("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
-                time.sleep(delta_t/time_acc)
-
-            else:
-                fake_bid = random_all(bid)
-                print("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
-                socket.send_string("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
-                time.sleep(delta_t/time_acc)
-
-                symbol='OLS VN Equity'
-                print("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
-                socket.send_string("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
-                time.sleep(delta_t/time_acc)
+        elif symbol == 'AVGO US Equity':
+            print("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
+            socket.send_string("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
+            time.sleep(delta_t/time_acc)
 
         else:
             if i % 10 != 0:
@@ -133,10 +104,14 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
     print("Done! All data has been sent successfully!")
 
 if  __name__ == "__main__":
-    s_year,s_month,s_date,s_hour,s_min = input("Input start time by format: yyyy-m-d-h-m (ex: 2022-1-1-0-0): ").split("-")
-    start_time = to_timestamps(int(s_year),int(s_month),int(s_date),int(s_hour),int(s_min))
+    e_string = input("Input end time by format: yyyy-m-d-h-m, 'Enter' means input default '2022-1-1-0-0': ")
+    if e_string:
+        e_year,e_month,e_date,e_hour,e_min = e_string.split("-")
+        end_time = to_timestamps(int(e_year),int(e_month),int(e_date),int(e_hour),int(e_min))
+    else:
+        start_time = to_timestamps(2022,1,1,0,0)
 
-    e_string = input("Input end time by format: yyyy-m-d-h-m (ex: 2022-1-2-0-0), 'Enter' means 'Now': ")
+    e_string = input("Input end time by format: yyyy-m-d-h-m (ex: 2022-1-1-0-0), 'Enter' means 'Now': ")
     if e_string:
         e_year,e_month,e_date,e_hour,e_min = e_string.split("-")
         end_time = to_timestamps(int(e_year),int(e_month),int(e_date),int(e_hour),int(e_min))

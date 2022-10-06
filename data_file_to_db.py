@@ -4,7 +4,7 @@ from datetime import datetime
 from tqdm import tqdm
 
 # tickdata csv file
-tickdatafile = 'tick_data.csv'
+tickdatafile = 'tick_data_221005.csv'
 
 def split_info(a):
     split_a = a.split(":")
