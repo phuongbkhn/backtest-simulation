@@ -30,7 +30,7 @@ def connect_n_push_to_db(df:DataFrame):
 
         conn.commit()
 
-        print("Compeleted!")
+        print("Compeleted! All data is stored in your database!")
       
 	# close the communication with the PostgreSQL
         cur.close()

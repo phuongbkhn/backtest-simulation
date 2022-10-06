@@ -4,7 +4,7 @@ from datetime import datetime
 from tqdm import tqdm
 
 # tickdata csv file
-tickdatafile = 'tick_data_221005.csv'
+tickdatafile = 'tick_data.csv'
 
 def split_info(a):
     split_a = a.split(":")
@@ -45,4 +45,3 @@ if  __name__ == "__main__":
     df = make_dataframe(tickdatafile)
     print("*** STEP 2: WRITE DATA TO YOUR DATABASE!")
     connect_n_push_to_db(df)
-    print("All data in {} is stored in your database! All tasks done!".format(tickdatafile))
