@@ -63,6 +63,8 @@ def random_5():
 def random_500():
     return round(random.uniform(499,501),2)
 
+def now_time():
+    return round(datetime.now().timestamp() * 1000000)
 
 def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
     port = "5556"
@@ -73,31 +75,54 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
     data = read_data_from_db(start_timestamp, end_timestamp)
     for i in range(len(data)):
         symbol = data[i][0]
+        event_type = data[i][1]
         price = data[i][4]
         bid = data[i][6]
         ask = data[i][7]
+        tick_volume = data[i][5]
         delta_t = data[i][15]
 
         if symbol == 'FRO US Equity':
-            print("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
-            socket.send_string("{}-{}-{}-{}".format(symbol,random_5(),random_5(),random_5()))
+
+            price_5 = random_5()
+            bid_5 = random_5()
+            ask_5 = random_5()
+
+            str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+                                symbol,event_type,now_time(),price_5,bid_5,ask_5,tick_volume)
+            print("{" + str_to_send + "}")
+            socket.send_string("{" + str_to_send + "}")
+
             time.sleep(delta_t/time_acc)
         
         elif symbol == 'AVGO US Equity':
-            print("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
-            socket.send_string("{}-{}-{}-{}".format(symbol,random_500(),random_500(),random_500()))
+            price_500 = random_500()
+            bid_500 = random_500()
+            ask_500 = random_500()
+
+            str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+                                symbol,event_type,now_time(),price_500,bid_500,ask_500,tick_volume)
+            print("{" + str_to_send + "}")
+            socket.send_string("{" + str_to_send + "}")
+
             time.sleep(delta_t/time_acc)
 
         else:
             if i % 10 != 0:
-                print("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
-                socket.send_string("%s-%.2f-%.2f-%.2f" %(symbol,price,bid,ask))
+                str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+                                    symbol,event_type,now_time(),price,bid,ask,tick_volume)
+                print("{" + str_to_send + "}")
+                socket.send_string("{" + str_to_send + "}")
             
                 time.sleep(delta_t/time_acc)
+
             else:
                 fake_bid = random_all(bid)
-                print("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
-                socket.send_string("{}-{}-{}-{}".format(symbol,price,fake_bid,ask))
+                str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+                                    symbol,event_type,now_time(),price,fake_bid,ask,tick_volume)
+                print("{" + str_to_send + "}")
+                socket.send_string("{" + str_to_send + "}")
+                
                 time.sleep(delta_t/time_acc)
 
        
