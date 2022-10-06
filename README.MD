@@ -47,3 +47,37 @@ Use:
 ```
 python3 tickdata_sub_client.py
 ```
+## Requirements
+
+You need to have these below packages to run these modules:
+
+- **pandas**
+```
+pip install pandas
+```
+
+- **datetime**
+```
+pip install DateTime
+```
+
+- **tqdm**
+```
+pip install tqdm
+```
+
+- **psycopg2**
+```
+pip install psycopg2
+```
+
+You can also obtain a stand-alone package, not requiring a compiler or external libraries, by installing the psycopg2-binary package from PyPI:
+```
+pip install psycopg2-binary
+```
+
+- **zmq**
+```
+pip install pyzmq
+```
+More information about ZeroMQ: https://zeromq.org/
