@@ -88,7 +88,7 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
             bid_5 = random_5()
             ask_5 = random_5()
 
-            str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+            str_to_send = '"SYMBOL":"{}","EVEN_TYPE":"{}","TIME":{},"PRICE":{},"BID":{},"ASK":{},"TICK_VOLUME":{}'.format(
                                 symbol,event_type,now_time(),price_5,bid_5,ask_5,tick_volume)
             print("{" + str_to_send + "}")
             socket.send_string("{" + str_to_send + "}")
@@ -100,7 +100,7 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
             bid_500 = random_500()
             ask_500 = random_500()
 
-            str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+            str_to_send = '"SYMBOL":"{}","EVEN_TYPE":"{}","TIME":{},"PRICE":{},"BID":{},"ASK":{},"TICK_VOLUME":{}'.format(
                                 symbol,event_type,now_time(),price_500,bid_500,ask_500,tick_volume)
             print("{" + str_to_send + "}")
             socket.send_string("{" + str_to_send + "}")
@@ -109,7 +109,7 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
 
         else:
             if i % 10 != 0:
-                str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+                str_to_send = '"SYMBOL":"{}","EVEN_TYPE":"{}","TIME":{},"PRICE":{},"BID":{},"ASK":{},"TICK_VOLUME":{}'.format(
                                     symbol,event_type,now_time(),price,bid,ask,tick_volume)
                 print("{" + str_to_send + "}")
                 socket.send_string("{" + str_to_send + "}")
@@ -118,7 +118,7 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
 
             else:
                 fake_bid = random_all(bid)
-                str_to_send = "'SYMBOL':{},'EVEN_TYPE':{},'TIME':{},'PRICE':{},'BID':{},'ASK':{},'TICK_VOLUME':{}".format(
+                str_to_send = '"SYMBOL":"{}","EVEN_TYPE":"{}","TIME":{},"PRICE":{},"BID":{},"ASK":{},"TICK_VOLUME":{}'.format(
                                     symbol,event_type,now_time(),price,fake_bid,ask,tick_volume)
                 print("{" + str_to_send + "}")
                 socket.send_string("{" + str_to_send + "}")

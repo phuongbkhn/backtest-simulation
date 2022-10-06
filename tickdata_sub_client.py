@@ -1,4 +1,5 @@
 import zmq
+# import json
 
 port = "5556"
 
@@ -10,9 +11,12 @@ print("Collecting updates from tickdatatable of tickdata database...")
 socket.connect ("tcp://localhost:%s" % port)
 
 # Subscribe to symbol
-symbol = "AVGO US Equity"
-socket.setsockopt_string(zmq.SUBSCRIBE, symbol)
+# symbol = "AVGO US Equity"
+socket.setsockopt_string(zmq.SUBSCRIBE, '')
 
-while True:
-    string = socket.recv()
+for i in range(1):
+    string = socket.recv_string()
     print(string)
+
+# json_ = json.loads(string)
+# print(json_)
