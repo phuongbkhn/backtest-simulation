@@ -1,5 +1,4 @@
+.ipynb_checkpoints/
+__pycache__/
+test_code.ipynb
 *.csv
-__pycache__
-.~lock.tick_data.csv#
-.ipynb_checkpoints
-process_data.ipynb

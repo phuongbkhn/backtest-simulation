@@ -52,7 +52,7 @@ def random_lower_outlier(x):
     return round(x*random.uniform(0.9,0.94),2)
 
 def random_all(x):
-    random_list = [0, None]
+    random_list = [0, 'null']
     random_list.append(random_upper_outlier(x))
     random_list.append(random_lower_outlier(x))
     return random.choice(random_list)

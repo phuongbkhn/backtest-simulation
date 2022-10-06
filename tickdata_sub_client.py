@@ -1,5 +1,5 @@
 import zmq
-# import json
+import json
 
 port = "5556"
 
@@ -14,9 +14,9 @@ socket.connect ("tcp://localhost:%s" % port)
 # symbol = "AVGO US Equity"
 socket.setsockopt_string(zmq.SUBSCRIBE, '')
 
-for i in range(1):
+while True:
     string = socket.recv_string()
     print(string)
 
-# json_ = json.loads(string)
-# print(json_)
+    json_ = json.loads(string)
+    print(json_)
