@@ -11,11 +11,12 @@ context = zmq.Context()
 socket = context.socket(zmq.REP)
 socket.bind("tcp://*:%s" % port)
 
-socket.bind("tcp://*:%s" % port)
-
-while True:
+# while True:
     #  Wait for next request from client
-    message = socket.recv()
-    print("Received request: ", message)
-    time.sleep (1)  
-    socket.send("World from %s" % port)
+message = socket.recv()
+# print("Received request: ", message)
+# time.sleep (1)  
+# socket.send_string("World from %s" % port)
+for i in range(10):
+    print("send {}".format(i))
+    socket.send_string("Send {} to client".format(i))
