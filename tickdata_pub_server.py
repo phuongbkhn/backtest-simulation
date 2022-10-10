@@ -118,7 +118,7 @@ def send_data_zmq(start_timestamp, end_timestamp, time_acc=1000):
 
             else:
                 fake_bid = random_all(bid)
-                str_to_send = '"SYMBOL":"{}","EVEN_TYPE":"{}","TIME":{},"PRICE":{},"BID":{},"ASK":{},"TICK_VOLUME":{}'.format(
+                str_to_send = '"SYMBOL":"{}","EVENT_TYPE":"{}","TIME":{},"PRICE":{},"BID":{},"ASK":{},"TICK_VOLUME":{}'.format(
                                     symbol,event_type,now_time(),price,fake_bid,ask,tick_volume)
                 print("{" + str_to_send + "}")
                 socket.send_string("{" + str_to_send + "}")
