@@ -2,7 +2,7 @@ import psycopg2
 from config import config
 from tqdm import tqdm
 
-tickdata_file = 'tick_data_221005.csv'
+tickdata_file = 'tick_data.csv'
 
 def split_info(text):
     extracted_data = []
