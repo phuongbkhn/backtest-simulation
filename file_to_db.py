@@ -1,10 +1,20 @@
-from pandas import DataFrame
 import psycopg2
 from config import config
 from tqdm import tqdm
 
-def connect_n_push_to_db(df:DataFrame):
-    """ Connect to the PostgreSQL database server """
+tickdata_file = 'tick_data_221005.csv'
+
+def split_info(text):
+    extracted_data = []
+    split_text = text.split(",")
+    for i in split_text:
+        split_i = i.split(":")
+        extracted_data.append(split_i[1].strip())
+    return extracted_data
+
+
+def connect_n_push_to_db(data:list):
+    """ Connect to the PostgreSQL database and Insert new data """
     conn = None
     try:
         # read connection parameters
@@ -21,10 +31,10 @@ def connect_n_push_to_db(df:DataFrame):
 	    # execute a statement
         print("Inserting new data to database...")
 
-        for i in tqdm(range(len(df))):
-            data = list(df.loc[i])
-            added_value = "('{}','{}',{},{},{},{},{},{},'{}','{}',{},{},{},{},{},{})".format(
-                    data[0], data[1], data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12],data[13],data[14],data[15])
+        for dt in tqdm(data):
+            dt_ = split_info(dt)
+            added_value = "('{}','{}',{},{},{},{},{},{},'{}','{}')".format(
+                        dt_[0],dt_[1],dt_[2],dt_[3],dt_[4],dt_[5],dt_[6],dt_[7],dt_[8],dt_[9])
             sql_command = "INSERT INTO tickdatatable VALUES {};".format(added_value)
             cur.execute(sql_command)
 
@@ -43,4 +53,6 @@ def connect_n_push_to_db(df:DataFrame):
             print('Database connection closed.')
 
 if __name__ == '__main__':
-    connect_n_push_to_db()
+    with open(tickdata_file) as f:
+        data = f.readlines()
+    connect_n_push_to_db(data)
